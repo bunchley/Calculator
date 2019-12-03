@@ -16,13 +16,12 @@ displayNumber();
 function displayNumber() {
   numbers.forEach(number => {
     number.addEventListener("click", () => {
-      console.log(number.textContent);
+      // console.log(number.textContent);
       updateDisplayNumber(number.textContent);
-      //secondNumber = displayBox.textContent;
     });
   });
   window.addEventListener("keydown", e => {
-    console.log(e.key);
+    // console.log(e.key);
     updateDisplayNumber(`${e.key}`);
   });
 }
@@ -44,7 +43,7 @@ function check4Decimal() {
       for (i = 0; i < displayBox.textContent.length; i++) {
         if (displayBox.textContent[i] === ".") {
           decimalExists = true;
-          console.log("there is a decimal");
+          // console.log("there is a decimal");
           return;
         } else {
           displayBox.textContent = displayBox.textContent + ".";
@@ -67,7 +66,7 @@ function clearDisplay() {
 clearLastEntry();
 function clearLastEntry() {
   clearEntryButton.addEventListener("click", () => {
-    console.log("clicked");
+    // console.log("clicked");
     displayBox.textContent = displayBox.textContent.slice(0, -1);
   });
 }
@@ -78,13 +77,13 @@ function selectOperator() {
     operator.addEventListener("click", () => {
       if (currentOperator != "") {
         secondNumber = displayBox.textContent;
-        console.log("made it before compute total");
+        // console.log("made it before compute total");
         computeTotal(firstNumber);
         currentOperator = operator.textContent;
       } else {
         firstNumber = displayBox.textContent;
         currentOperator = operator.textContent;
-        console.log(firstNumber, ", firstNum");
+        // console.log(firstNumber, ", firstNum");
       }
     });
   });
@@ -98,20 +97,20 @@ function selectEqual() {
 }
 function computeTotal() {
   secondNumber = displayBox.textContent;
-  console.log(
-    secondNumber,
-    ", secondNumber",
-    currentOperator,
-    ", current operator",
-    firstNumber,
-    ", first number"
-  );
+  // console.log(
+  //   secondNumber,
+  //   ", secondNumber",
+  //   currentOperator,
+  //   ", current operator",
+  //   firstNumber,
+  //   ", first number"
+  // );
 
   total = operate(currentOperator, firstNumber, secondNumber);
 
-  console.log(total, ", total");
+  // console.log(total, ", total");
   firstNumber = total;
-  console.log(firstNumber, ", firstNum");
+  // console.log(firstNumber, ", firstNum");
   currentOperator = "";
   displayBox.textContent = total;
 }

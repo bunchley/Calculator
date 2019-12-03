@@ -1,7 +1,7 @@
 .calculator {
   display: grid;
   grid-template-columns: repeat(4, 3.57rem);
-  grid-template-rows: 5rem 3rem 3rem 3rem 3rem 3rem;
+  grid-template-rows: 3rem 3rem 3rem 3rem 3rem 3rem;
   grid-template-areas:
     "current current current current"
     "backspace clear modulo divide"
@@ -9,21 +9,28 @@
     "num4 num5 num6 minus"
     "num1 num2 num3 plus"
     "negative num0 period equal";
-
   color: white;
-
   position: absolute;
   top: 25%;
   left: 20%;
   border-top: 1px solid #626260;
   border-left: 1px solid #626260;
-  border-right: 1px solid #626260;
+  border-right: 0.5px solid #626260;
+  border-bottom: 1px solid #626260;
   font-family: "Lato", sans-serif;
   justify-items: stretch;
 }
+.background {
+  background-size: cover;
+}
+
+h1 {
+  text-align: end;
+}
 
 body {
-  background: lightgrey;
+  background: url(../images/Background.jpg);
+  background-size: cover;
   align-content: center;
 }
 .display {
