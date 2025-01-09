@@ -10,7 +10,6 @@ let currentOperator = "";
 let secondNumber = "";
 let firstNumber = "";
 let total = "";
-let decimalExists = false;
 let totalDisplayed = false;
 
 displayNumber();
@@ -22,7 +21,6 @@ function displayNumber() {
   });
   window.addEventListener("keydown", (e) => {
     updateDisplayNumber(`${e.key}`);
-    console.log(e.key);
     if (e.key === "Enter") {
       computeTotal();
     }
@@ -37,7 +35,6 @@ function displayNumber() {
 }
 
 function updateDisplayNumber(number) {
-  console.log("Total:", total, displayBox.textContent);
   if (totalDisplayed === true) {
     firstNumber = total;
     clearBetweenEntries();
@@ -79,7 +76,6 @@ function clearLastEntry() {
 function saveNumber(operator) {
   if (currentOperator != "") {
     secondNumber = displayBox.textContent;
-    // clearBetweenEntries();
     computeTotal(firstNumber);
     currentOperator = operator;
     clearBetweenEntries();
@@ -106,23 +102,22 @@ function selectEqual() {
 }
 function computeTotal() {
   secondNumber = displayBox.textContent;
-  console.log(
-    "First number",
-    firstNumber,
-    "\n",
-    "Current operator",
-    currentOperator,
-    "\n",
-    "SecondNumber",
-    secondNumber,
-    "\n"
-  );
+  // console.log(
+  //   "First number",
+  //   firstNumber,
+  //   "\n",
+  //   "Current operator",
+  //   currentOperator,
+  //   "\n",
+  //   "SecondNumber",
+  //   secondNumber,
+  //   "\n"
+  // );
 
   total = operate(currentOperator, firstNumber, secondNumber);
 
-  console.log("Total=", total);
+  // console.log("Total=", total);
   firstNumber = total;
-  // console.log(firstNumber, ", firstNum");
   currentOperator = "";
   displayBox.textContent = total;
   totalDisplayed = true;
