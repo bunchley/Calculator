@@ -11,80 +11,89 @@ let secondNumber = "";
 let firstNumber = "";
 let total = "";
 let decimalExists = false;
+let totalDisplayed = false;
 
 displayNumber();
 function displayNumber() {
-  numbers.forEach(number => {
+  numbers.forEach((number) => {
     number.addEventListener("click", () => {
-      // console.log(number.textContent);
       updateDisplayNumber(number.textContent);
     });
   });
-  window.addEventListener("keydown", e => {
-    // console.log(e.key);
+  window.addEventListener("keydown", (e) => {
     updateDisplayNumber(`${e.key}`);
-  });
-}
-
-function updateDisplayNumber(number) {
-  if (isNaN(number)) return;
-  if (currentOperator != "" || total != "") {
-    displayBox.textContent = "";
-  }
-  displayBox.textContent = displayBox.textContent + number;
-}
-
-check4Decimal();
-function check4Decimal() {
-  decimalButton.addEventListener("click", () => {
-    if (decimalExists) {
-      return "";
-    } else {
-      for (i = 0; i < displayBox.textContent.length; i++) {
-        if (displayBox.textContent[i] === ".") {
-          decimalExists = true;
-          // console.log("there is a decimal");
-          return;
-        } else {
-          displayBox.textContent = displayBox.textContent + ".";
-        }
-      }
+    console.log(e.key);
+    if (e.key === "Enter") {
+      computeTotal();
+    }
+    if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+      saveNumber(e.key);
+      clearBetweenEntries();
+    }
+    if (e.key === "Backspace") {
+      clearDisplay();
     }
   });
 }
 
-clearDisplay();
+function updateDisplayNumber(number) {
+  console.log("Total:", total, displayBox.textContent);
+  if (totalDisplayed === true) {
+    firstNumber = total;
+    clearBetweenEntries();
+    totalDisplayed = false;
+  }
+  if (number === ".") {
+    displayBox.textContent += ".";
+  } else if (number === "Shift") {
+    displayBox.textContent = displayBox.textContent;
+  } else {
+    if (isNaN(number)) return;
+    displayBox.textContent = displayBox.textContent + number;
+  }
+}
+
+function clearBetweenEntries() {
+  displayBox.textContent = "";
+}
 function clearDisplay() {
+  displayBox.textContent = "";
+  firstNumber = "";
+  secondNumber = "";
+  total = "";
+  currentOperator = "";
+}
+selectClearDisplay();
+function selectClearDisplay() {
   clearButton.addEventListener("click", () => {
-    displayBox.textContent = "";
-    firstNumber = "";
-    secondNumber = "";
-    total = "";
-    currentOperator = "";
+    clearDisplay();
   });
 }
 clearLastEntry();
 function clearLastEntry() {
   clearEntryButton.addEventListener("click", () => {
-    // console.log("clicked");
     displayBox.textContent = displayBox.textContent.slice(0, -1);
   });
 }
 
+function saveNumber(operator) {
+  if (currentOperator != "") {
+    secondNumber = displayBox.textContent;
+    // clearBetweenEntries();
+    computeTotal(firstNumber);
+    currentOperator = operator;
+    clearBetweenEntries();
+  } else {
+    firstNumber = displayBox.textContent;
+    currentOperator = operator;
+    clearBetweenEntries();
+  }
+}
 selectOperator();
 function selectOperator() {
-  operators.forEach(operator => {
+  operators.forEach((operator) => {
     operator.addEventListener("click", () => {
-      if (currentOperator != "") {
-        secondNumber = displayBox.textContent;
-        // console.log("made it before compute total");
-        computeTotal(firstNumber);
-        currentOperator = operator.textContent;
-      } else {
-        firstNumber = displayBox.textContent;
-        currentOperator = operator.textContent;
-        // console.log(firstNumber, ", firstNum");
-      }
+      saveNumber(operator.textContent);
     });
   });
 }
@@ -97,22 +106,26 @@ function selectEqual() {
 }
 function computeTotal() {
   secondNumber = displayBox.textContent;
-  // console.log(
-  //   secondNumber,
-  //   ", secondNumber",
-  //   currentOperator,
-  //   ", current operator",
-  //   firstNumber,
-  //   ", first number"
-  // );
+  console.log(
+    "First number",
+    firstNumber,
+    "\n",
+    "Current operator",
+    currentOperator,
+    "\n",
+    "SecondNumber",
+    secondNumber,
+    "\n"
+  );
 
   total = operate(currentOperator, firstNumber, secondNumber);
 
-  // console.log(total, ", total");
+  console.log("Total=", total);
   firstNumber = total;
   // console.log(firstNumber, ", firstNum");
   currentOperator = "";
   displayBox.textContent = total;
+  totalDisplayed = true;
 }
 
 toggleNegative();
@@ -124,22 +137,22 @@ function toggleNegative() {
 
 // OPERATOR FUNCTIONS - START
 function addition(num1, num2) {
-  return parseInt(num1) + parseInt(num2);
+  return (parseFloat(num1) + parseFloat(num2)).toFixed(2);
 }
 
 function subtraction(num1, num2) {
-  return num1 - num2;
+  return (parseFloat(num1) - parseFloat(num2)).toFixed(2);
 }
 
 function multiplication(num1, num2) {
-  return num1 * num2;
+  return (num1 * num2).toFixed(2);
 }
 
 function division(num1, num2) {
   if (num2 === "0") {
     return "NaN";
   }
-  return num1 / num2;
+  return (parseFloat(num1) / parseFloat(num2)).toFixed(2);
 }
 
 function operate(action, num1, num2) {
@@ -158,7 +171,7 @@ function operate(action, num1, num2) {
   if (action === "-") {
     return subtraction(num1, num2);
   }
-  if (action === "x") {
+  if (action === "x" || action === "*") {
     return multiplication(num1, num2);
   }
   if (action === "/") {
